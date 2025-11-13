@@ -98,13 +98,16 @@ const MetricCards = () => {
       cards = metricsData.metrics.map((metric) => ({
         title: metric.title || "N/A",
         value: metric.currentValue || 0,
-        percentage: metric.percentageChange || 0,
+        percentage: Math.round(Number(metric.percentageChange) || 0),
       }));
     }
   } else if (isAdmin) {
     // Admin response structure
     console.log("Using Admin API - metricCards:", metricsResponse?.metricCards);
-    cards = metricsResponse?.metricCards || [];
+    cards = (metricsResponse?.metricCards || []).map((card) => ({
+      ...card,
+      percentage: Math.round(Number(card.percentage) || 0),
+    }));
   } else {
     // Employee response structure
     console.log("Using Employee API - metricsData:", metricsResponse?.metricsData);
@@ -113,7 +116,7 @@ const MetricCards = () => {
       cards = metricsData.metrics.map((metric) => ({
         title: metric.title || "N/A",
         value: metric.currentValue || 0,
-        percentage: metric.percentageChange || 0,
+        percentage: Math.round(Number(metric.percentageChange) || 0),
       }));
     }
   }
